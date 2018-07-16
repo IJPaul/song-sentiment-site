@@ -1,0 +1,36 @@
+
+.question, #headerTitle {
+    font-family: 'Oswald', 'Serif';
+    text-align: center;
+}
+
+.sectionTitle {
+    font-family: 'Oswald', 'Serif';
+}
+
+#scatterChart, #lineChart {
+    padding: 10px;
+}
+
+#note, .chart-container {
+    width: 100% !important;
+    min-width: 1000px;
+    height: auto !important;
+}
+
+p, td, li {
+    font-size: 14px;
+}
+
+#tweetButton {
+    text-align: center;
+}
+ 
+a {
+    align-items: center;
+}
+
+#tweetContainer {
+    width: 100%;
+    text-align: center;
+}
