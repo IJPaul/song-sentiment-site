@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <!--Website Style-->
+        <link rel="stylesheet" type="text/css" href="sentiment_style.css"/>
+        <!--Boostrap-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous"/>
+        <!--Google Fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Oswald:400,500" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Gaegu" rel="stylesheet">
+        <!--Chart.js-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+        <!--JQuery-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!--Twitter-->
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div id="header">
+                    <h1 id="headerTitle">Data Visualization</h1>
+                    <h4 class="sectionTitle">Introduction</h4>
+                    <p>
+                        The motivation for this project came from listening to my saved songs playlist on shuffle. One moment I was listening to "Theme From New York, New York" by Frank Sinatra, and the next I was listening to "Butterfly Effect" by Travis Scott. This sharp contrast made me realize how much mainstream music has changed in just the past 50 years. I thought it would be fun to quantify and visualize some of these changes.
+                    </p>
+                    <h4 class="sectionTitle">Process Overview</h4>
+                    <p>
+                        I tested out a couple sentiment libraries for Python by randomly sampling songs throughout the decades. Although made with social media contexts in mind, the VADER sentiment lexicon consistently produced compound score results that accurately represented the continuum of negative / neutral / positive sentiment of familiar songs. Ideally, I would have used a sentiment lexicon designed specifically to analyze music lyrics, but I found none, so I chose to continue with VADER. 
+                    </p>
+                    <p>
+                        I scraped the <i>Billboard</i> Top 100 artists and songs and constructed Genius URLs from them and then scraped the contents of those Genius website pages to get song lyrics. From there I analyzed each song line by line and calculated an average compound score for the entire song. Based on the numeric average compound score, I rated the song as positive, negative, or neutral. All of this data was written to an Excel workbook, with a worksheet corresponding to each year.
+                    </p>
+                    <p>
+                        The interactive graphs below were made by converting the Excel data to a JSON string that was parsed using Chart.js.
+                    </p>
+                            
+                    <h4  class="sectionTitle">Scoring</h4>
+                    <ul>
+                        <li>The VADER sentiment lexicon is sensitive to both the polarity and the intensity of sentiments expressed in social media contexts, <b>and</b> is also generally applicable to sentiment analysis in other domains.</li>
+                        <li>The compound score is computed by summing the valence scores of each word in the lexicon, adjusted according to the rules, and then normalized to be between -1 (most extreme negative) and +1 (most extreme positive). Calling it a 'normalized, weighted composite score' is accurate.</li>
+                    </ul>
+                    
+            </div>
+        </div>
+    
+        <div class="chart-container">
+            <canvas id="scatterChart"></canvas>
+        </div>
+        
+        <div class="container-fluid">
+            <p id="note">
+                <b>*</b>Some years, especially in the 60s and 70s, had one or two purely instrumental tracks on the <i>Billboard</i> Hot 100 for that year. These songs were not included when analyzing song sentiment since they do not have lyrics. 
+            </p>
+            <h4 class="sectionTitle">Conclusions</h4>
+            <p>
+                Although theoretically the VADER compound score can range from -1 to 1, no song in reality comes close to this value, as songs are not just lists of objectively 'good' or 'bad' statements. Nevertheless, analyzing a song line by line using compound scores quantitavely measures how much of the song expresses negative, neutral, and positive sentiments.
+            </p>
+            <p>
+                The following are examples of songs with their accompanying overall compound score, as well as the compound score of a one-line
+                lyric from each song:
+            </p>
+            <div class="container" id="tableContainer">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Artist</th>
+                        <th scope="col">Song</th>
+                        <th scope="col">Song Compound Score</th>
+                        <th scope="col">Lyric</th>
+                        <th scope="col">Lyric Compound Score</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Justin Bieber</td>
+                            <td>Love Yourself</td>
+                            <td>0.104</td>
+                            <td>"You think I'm crying on my own, well I ain't"</td>
+                            <td>-0.25</td>
+                        </tr>
+                        <tr>
+                            <td>The Wanted</td>
+                            <td>Glad You Came</td>
+                            <td>0.182</td>
+                            <td>"I'm glad you came"</td>
+                            <td>0.459</td>
+                        </tr>
+                        <tr>
+                            <td>The Police</td>
+                            <td>Every Breath You Take</td>
+                            <td>-0.00194</td>
+                            <td>"Since you've gone I've been lost without a trace"</td>
+                            <td> -0.318</td>
+                        </tr>
+                        <tr>
+                            <td>2Pac</td>
+                            <td>California Love</td>
+                            <td>0.0549</td>
+                            <td>"California knows how to party"</td>
+                            <td>0.402</td>
+                        </tr>
+                        <tr>
+                            <td>The Beach Boys</td>
+                            <td>Surfin' U.S.A.</td>
+                            <td>0.00753</td>
+                            <td>"Everybody's gone surfin'"</td>
+                            <td>0.0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>
+                Because lyrics contain neutral lines as well, the average VADER compound score of a song is brought down since the sum of the
+                compound score is hardly changed, but the denominator (number of lines in the song) is incremented. This is also why we expect the
+                yearly score to be lower than that of the scores of one-line lyrics like those listed above. The linear regression line
+                for the data has the equation <b>Y = -0.001107 * X + 2.20789</b> with an <b>R<sup>2</sup> = 0.6875</b> where <b>Y</b> is average compound score and <b>X</b> is year.
+            </p> 
+        </div>
+        
+        
+        
+        <div class="chart-container">
+            <canvas id="lineChart"></canvas>
+        </div>
+       
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <h4 class="question">Why do the graphs start at 1960?</h4>
+                </div>
+                <div class="col-4">
+                    <h4 class="question">Why do the graphs end at 2017? It's 
+                        <script>var today = new Date(); document.write(today.getFullYear());</script>.
+                    </h4>
+                </div>
+                <div class="col-4">
+                    <h4 class="question">How are the <i>Billboard</i> Top 100 calculated each year?</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <p class="ans">
+                        Prior to 1956, <i>Billboard</i> did not have a unified, all-encompassing popularity chart. Also, the site from which I scraped data only provided the top 30 songs for the years before 1956. Thus, to keep the number of songs analyzed consistent over the years, use a larger sample size of music for the year, and start at the beginning of a decade, I chose 1960 as the start year.
+                    </p>
+                </div>
+                <div class="col-4">
+                    <p class = "ans">
+                        <i>Billboard's</i> "chart year" runs from the first week of December to the final week of November. This altered calendar allows for <i>Billboard</i> to calculate year-end charts and release them in time for its final print issue in the last week of December. The graphs will update around New Years.
+                    </p>
+                </div>
+                <div class="col-4">
+                    <p class="ans">
+                        The exact methology has changed throughout the years, unsurprisingly. However, the year-end charts are now calculated by a cumulative total of yearlong sales, streaming, and airplay points, making the chart a good representation of the type of music that was popular that year.
+                    </p>
+                </div>
+            </div>   
+        </div>
+        
+        
+        <div class="container-fluid" id="footer">
+            <h4 class="sectionTitle">Citation</h4>
+            <ul id="citations">
+                <li>Hutto, C.J. & Gilbert, E.E. (2014). VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text. Eighth International Conference on Weblogs and Social Media (ICWSM-14). Ann Arbor, MI, June 2014.</li>
+            </ul>
+        </div>
+        
+       
+        
+       
+        <script>
+            
+            var scorePointColor = [];
+            var scatterArr = [];
+            var bestFitArr = [];
+            
+            var negDataArr = [];
+            var neuDataArr = [];
+            var posDataArr = [];
+            
+            var neutral = "#FFD24C";
+            var positive = "#4CA64C";
+            var negative = "#ff6452";
+            
+            var moodDict = {'negative' : 0, 'positive' : 0, 'neutral' : 0};
+            var requestURL = 'https://api.myjson.com/bins/n7jc6';
+            var request = new XMLHttpRequest();
+           
+        
+            request.open("GET", requestURL);
+            request.responseType = "json";
+            request.send();
+            request.onload = function() {
+                
+                var jsonObj = request.response;
+                plotCompoundScoreOverTime(jsonObj);
+                plotMoodOverTime(jsonObj);
+                plotBestFitPointsOverTime(1960, 2017);
+            
+                var labels = ['negative', 'neutral', 'positive'];
+                
+                var moodChartData = {
+                    datasets: [{
+                        data: negDataArr,
+                        label: labels[0],
+                        lineTension: 0,
+                        fill: false,
+                        pointBackgroundColor: negative,
+                        pointBorderColor:  negative,
+                        borderColor: negative,
+                        backgroundColor: negative
+                        
+                    }, {
+                        data: neuDataArr,
+                        label: labels[1],
+                        lineTension: 0,         
+                        fill: false,
+                        pointBackgroundColor: neutral,
+                        pointBorderColor:  neutral,
+                        borderColor: neutral,
+                        backgroundColor: neutral
+                    }, {
+                        data: posDataArr,
+                        label: labels[2],
+                        lineTension: 0,
+                        fill: false,
+                        pointBackgroundColor: positive,
+                        pointBorderColor:  positive,    
+                        borderColor: positive,
+                        backgroundColor: positive
+                    }],
+                };
+                
+                var moodChartOptions = {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    title: {
+                            text: 'Number of Positive, Negative, and Neutral Songs by Year',
+                            fontSize: 16,
+                            position: 'top',
+                            display: true
+                    },
+                    legend: {
+                        display: true,
+                        fillStyle: negative
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            type: 'linear',
+                            position: 'bottom',
+                            ticks: {
+                                stepSize: 2,  
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Year',
+                                fontSize: 16
+                            }
+                        }],
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Number of Songs',
+                                fontSize: 16
+                            },  
+                        }]
+                    },
+                };
+                
+                var moodCtx = document.getElementById('lineChart');
+                var lineChart = new Chart(moodCtx, {
+                    type: 'line',
+                    data: moodChartData,
+                    options: moodChartOptions
+                });
+                
+                var scoreChartData = {
+                    datasets: [{
+                        data: scatterArr,
+                        label: 'Average Compound Score',
+                        fill: false,
+                        showLine: true,
+                        tension: 0,
+                        pointBackgroundColor: scorePointColor,
+                        pointBorderColor:  scorePointColor,
+                        borderColor: positive,
+                        backgroundColor: positive
+                    }, {
+                        data: bestFitArr,
+                        label:  'Best Fit Line',
+                        fill: false,
+                        showLine: true,
+                        tension: 0,
+                        pointBackgroundColor: '#000',
+                        pointBorderColor:  '#000',
+                        borderColor: '#000',
+                        backgroundColor: '#000'
+                    }]
+                };
+                
+                var scoreChartOptions = {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: true,
+                    },
+                    title: {
+                        text: 'Average Compound Score of Top 100* Songs by Year',
+                        fontSize: 16,
+                        position: 'top',
+                        display: true
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            type: 'linear',
+                            position: 'bottom',
+                            ticks: {
+                                stepSize: 2,
+                      
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Year',
+                                fontSize: 16
+                            }
+                        }],
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Average Compound Score',
+                                fontSize: 16
+                            }, 
+                        }]
+                    },
+                    
+                };
+                
+                var scoreCtx = document.getElementById("scatterChart");
+                var scatterChart = new Chart(scoreCtx, {
+                    type: 'scatter',
+                    data: scoreChartData,
+                    options: scoreChartOptions,        
+                });
+            };
+            
+            
+            function plotCompoundScoreOverTime(jsonObj){
+                for(var year in jsonObj){
+                    if(jsonObj.hasOwnProperty(year)){
+                        var totalCompoundScore = 0;
+                        var count = 0;
+                        for(var block in jsonObj[year]){
+                            for(var song in jsonObj[year][block]){
+                                totalCompoundScore += parseFloat(jsonObj[year][block][song]['score']);
+                                count++;
+                            }
+                        }
+                        var yearlyScore = (totalCompoundScore / count);
+                        scatterArr.push({x: parseInt(year), y: yearlyScore.toFixed(3)});
+                        if (yearlyScore >= 0.05){
+                            scorePointColor.push(positive);
+                        } else if(yearlyScore > -0.5) {
+                            scorePointColor.push(neutral);
+                        } else {
+                            scorePointColor.push(negative);
+                        }
+                    }
+                }
+            }
+            
+            function plotMoodOverTime(jsonObj){
+                for(var year in jsonObj){
+                    if(jsonObj.hasOwnProperty(year)){
+                        var totalCompoundScore = 0;
+                        var count = 0;
+                        for(var block in jsonObj[year]){
+                            for(var song in jsonObj[year][block]){
+                                var mood = jsonObj[year][block][song]['mood'];
+                                moodDict[mood] += 1
+                            }
+                        }
+                        
+                        var yearInt = parseInt(year);
+                        negDataArr.push({x: yearInt, y: moodDict['negative']});
+                        neuDataArr.push({x: yearInt, y: moodDict['neutral']});
+                        posDataArr.push({x: yearInt, y: moodDict['positive']});    
+                    } 
+                    for(var key in moodDict){
+                        moodDict[key] = 0;
+                    }
+                }
+            }
+            
+            
+            function plotBestFitPointsOverTime(startYear, endYear){ 
+                for(var year = startYear; year <= endYear; year += 1){
+                    var yearInt = parseInt(year);
+                    bestFitArr.push({x: yearInt, y: bestFitScore(yearInt).toFixed(4)})
+                }
+            }
+            
+            function bestFitScore(year){
+                var m = -0.00107026980667049;
+                var b = 2.2078959437927;
+                var score = m * parseInt(year) + b;
+                return score;
+            }
+            
+            
+        </script>
+    </body>
+</html>
