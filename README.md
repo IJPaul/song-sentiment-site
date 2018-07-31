@@ -7,7 +7,7 @@ The motivation for this project came from me listening to my saved songs playlis
 
 # Visualizations
 
-The visualizations can be found [here](https://ijpaul.github.io/song-sentiment-site/). 
+The visualizations can be found [here](https://ijpaul.github.io/song-sentiment-site/).
 
 # Tools and Packages Used
 
