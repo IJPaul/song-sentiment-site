@@ -22,10 +22,14 @@
                     <h1 id="headerTitle">Data Visualization</h1>
                     <h4 class="sectionTitle">Introduction</h4>
                     <p>
-                        The motivation for this project came from me listening to my saved songs playlist on shuffle. One moment I was listening to "Theme From New York, New York" by Frank Sinatra, and the next I was listening to "Butterfly Effect" by Travis Scott. This sharp contrast made realize how much mainstream music has changed in just the past 50 years. I thought it would be fun to quantify and visualize some of these changes.
+                        The motivation for this project came from listening to my saved songs playlist on shuffle. One moment I was listening to "Theme From New York, New York" by Frank Sinatra, and the next I was listening to "Butterfly Effect" by Travis Scott. This sharp contrast made me realize how much mainstream music has changed in just the past 50 years. I thought it would be fun to quantify and visualize some of these changes.
+                    </p>
+                    <h4 class="sectionTitle">Process Overview</h4>
+                    <p>
+                        I tested out a couple sentiment libraries for Python by randomly sampling songs throughout the decades. Although made with social media contexts in mind, the VADER sentiment lexicon consistently produced compound score results that accurately represented the continuum of negative / neutral / positive sentiment of familiar songs. Ideally, I would have used a sentiment lexicon designed specifically to analyze music lyrics, but I found none, so I chose to continue with VADER. 
                     </p>
                     <p>
-                        I tested out a couple sentiment libraries for Python on Github by randomly sampling songs throughout the decades. Although made with social media contexts in mind,VADER to consistently give compound score answers that not only made sense, but also were in line with how I viewed the continuum of negative / neutral / positive sentiment of familiar songs. This process is by no means objective, but as I found no sentiment lexicons made specifically for music, it was the best I could do. Maybe I'll work on one myself in the future. 😀
+                        
                     </p>
                     <h4  class="sectionTitle">Scoring</h4>
                     <ul>
@@ -46,11 +50,11 @@
             </p>
             <h4 class="sectionTitle">Conclusions</h4>
             <p>
-                Although theoretically the VADER compound score can vary between -1 to 1, no song in reality would come close to this value, as songs are not just lists of objectively 'good' or 'bad' statements. However, still analyzing a song line by line using compound score quantitavely sheds some light on exactly how much of the song expresses negative, neutral, or positive sentiment.
+                Although theoretically the VADER compound score can range from -1 to 1, no song in reality comes close to this value, as songs are not just lists of objectively 'good' or 'bad' statements. Nevertheless, analyzing a song line by line using compound scores quantitavely measures how much of the song expresses negative, neutral, and positive sentiments.
             </p>
             <p>
-                The following are examples of songs with their accompanying compound score, as well as the compound score of one line
-                lyrics from the songs:
+                The following are examples of songs with their accompanying overall compound score, as well as the compound score of a one-line
+                lyric from each song:
             </p>
             <div class="container" id="tableContainer">
                 <table class="table">
@@ -105,7 +109,7 @@
             <p>
                 Because lyrics contain neutral lines as well, the average VADER compound score of a song is brought down since the sum of the
                 compound score is hardly changed, but the denominator (number of lines in the song) is incremented. This is also why we expect the
-                yearly score to be lower than that of the scores of one-liners like those listed above. The linear regression line
+                yearly score to be lower than that of the scores of one-line lyrics like those listed above. The linear regression line
                 for the data has the equation <b>Y = -0.001107 * X + 2.20789</b> with an <b>R<sup>2</sup> = 0.6875</b> where <b>Y</b> is average compound score and <b>X</b> is year.
             </p> 
         </div>
@@ -133,17 +137,17 @@
             <div class="row">
                 <div class="col-4">
                     <p class="ans">
-                        Prior to 1956, <i>Billboard</i> did not have a unified, all-encompassing popularity chart. Also, the site I used to scrape data from only provided the top 30 songs of the year before 1956. Thus, to keep the number of songs analyzed consistent over the years, use a larger sample size of music for the year, and start at the beginning of a decade, I chose 1960 as the start year.
+                        Prior to 1956, <i>Billboard</i> did not have a unified, all-encompassing popularity chart. Also, the site from which I scraped data only provided the top 30 songs for the years before 1956. Thus, to keep the number of songs analyzed consistent over the years, use a larger sample size of music for the year, and start at the beginning of a decade, I chose 1960 as the start year.
                     </p>
                 </div>
                 <div class="col-4">
                     <p class = "ans">
-                        <i>Billboard's</i> "chart year" runs from the first week of December to the final week in November. This altered calendar allows for <i>Billboard</i> to calculate year-end charts and release them in time for its final print issue in the last week of December. The graphs will update around New Years.
+                        <i>Billboard's</i> "chart year" runs from the first week of December to the final week of November. This altered calendar allows for <i>Billboard</i> to calculate year-end charts and release them in time for its final print issue in the last week of December. The graphs will update around New Years.
                     </p>
                 </div>
                 <div class="col-4">
                     <p class="ans">
-                        The exact methology has changed throughout the years, unsurpisingly. However, as of now, the year-end charts are now calculated by a cumulative total of yearlong sales, streaming, and airplay points, making the chart a good representation of the type of music that was popular that year.
+                        The exact methology has changed throughout the years, unsurprisingly. However, the year-end charts are now calculated by a cumulative total of yearlong sales, streaming, and airplay points, making the chart a good representation of the type of music that was popular that year.
                     </p>
                 </div>
             </div>   
