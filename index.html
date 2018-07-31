@@ -29,7 +29,7 @@
                         I tested out a couple sentiment libraries for Python by randomly sampling songs throughout the decades. Although made with social media contexts in mind, the VADER sentiment lexicon consistently produced compound score results that accurately represented the continuum of negative / neutral / positive sentiment of familiar songs. Ideally, I would have used a sentiment lexicon designed specifically to analyze music lyrics, but I found none, so I chose to continue with VADER. 
                     </p>
                     <p>
-                        I scraped the <i>Billboard</i> Top 100 artists and songs and constructed Genius URLs from them and then scraped the contents of those Genius website pages to get song lyrics. From there I analyzed each song line by line and calculated an average compound score for the entire song. Based on the numeric average compound score, I rated the song as positive, negative, or neutral. All of this data was written to an Excel workbook, with a worksheet corresponding to each year.
+                        I scraped the Billboard Top 100 artists and songs and constructed Genius URLs from them and then scraped the contents of those Genius website pages to get song lyrics. From there I analyzed each song line by line and calculated an average compound score for the entire song. Based on the numeric average compound score, I rated the song as positive, negative, or neutral. All of this data was written to an Excel workbook, with a worksheet corresponding to each year.
                     </p>
                     <p>
                         The interactive graphs below were made by converting the Excel data to a JSON string that was parsed using Chart.js.
