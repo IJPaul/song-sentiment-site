@@ -23,7 +23,7 @@ The visualizations can be found [here](https://ijpaul.github.io/song-sentiment-s
 # Notes About Scoring 
 ###### Taken From the https://github.com/cjhutto/vaderSentiment README.rst 
 
-* The VADER sentiment lexicon is sensitive both the polarity and the intensity of sentiments expressed in social media contexts, **and** is also generally applicable to sentiment analysis in other domains
+* The VADER sentiment lexicon is sensitive to both the polarity and the intensity of sentiments expressed in social media contexts, **and** is also generally applicable to sentiment analysis in other domains
 * The compound score is computed by summing the valence scores of each word in the lexicon, adjusted according to the rules, and then normalized to be between -1 (most extreme negative) and +1 (most extreme positive). This is the most useful metric if you want a single unidimensional measure of sentiment for a given sentence. Calling it a 'normalized, weighted composite score' is accurate.
 
   * **positive sentiment**: ``compound`` score >=  0.05
